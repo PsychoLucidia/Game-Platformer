@@ -15,7 +15,7 @@ This is a test game driven by a short story. A platformer where you explore stag
 ![Image](https://github.com/PsychoLucidia/Game-Platformer/blob/main/readme%20Files/Screenshot%202023-11-03%20231505.png)
 
 ## Figma Documentations
-Visit [this link](https://www.figma.com/file/QfSoZrHhpjoq08adYhXI3p/Game-Design?type=design&node-id=0%3A1&mode=design&t=gfnKcFCG7DMsFWqm-1){:target="_blank"} for taking a look at my Figma presentation.
+Visit [this link](https://www.figma.com/file/QfSoZrHhpjoq08adYhXI3p/Game-Design?type=design&node-id=0%3A1&mode=design&t=gfnKcFCG7DMsFWqm-1) for taking a look at my Figma presentation.
 
 ## Build Files
 Not yet available :)
