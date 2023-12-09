@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControlManager : MonoBehaviour
 {
-    private PauseTween pauseScript;
+    private PauseTween pauseTween;
     [SerializeField] private bool isPaused = false;
     [SerializeField] private bool inOptions = false;
     [SerializeField] private bool inQuit = false;
@@ -12,7 +12,7 @@ public class ControlManager : MonoBehaviour
 
     void Start()
     {
-        pauseScript = GetComponent<PauseTween>();    }
+        pauseTween = GetComponent<PauseTween>();    }
     // Update is called once per frame
     void Update()
     {
@@ -23,22 +23,23 @@ public class ControlManager : MonoBehaviour
                 if (inOptions)
                 {
                     inOptions = false;
-                    pauseScript.pauseCloseOptions();
+                    pauseTween.pauseCloseOptions();
                 }
                 else if (inQuit)
                 {
                     inQuit = false;
+                    pauseTween.pauseCloseExit();
                 }
             }
             else if (isPaused)
             {
                 isPaused = false;
-                pauseScript.closePause();
+                pauseTween.closePause();
             }
             else if (!isPaused)
             {
                 isPaused = true;
-                pauseScript.openPause();
+                pauseTween.openPause();
             }
         }
     }
@@ -61,5 +62,15 @@ public class ControlManager : MonoBehaviour
     public void quitFalse()
     {
         inQuit = false;
+    }
+
+    public void pauseTrue()
+    {
+        isPaused = true;
+    }
+
+    public void pauseFalse()
+    {
+        isPaused = false;
     }
 }

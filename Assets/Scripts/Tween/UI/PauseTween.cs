@@ -24,9 +24,16 @@ public class PauseTween : MonoBehaviour
     public Transform pauOpSliderTrans;
     public Transform pauOpBackTrans;
 
+    [Header("Quit Elements")]
+    public CanvasGroup pauQuitTextCG;
+    public CanvasGroup pauQuitSelectionCG;
+    public Transform pauQuitTextTrans;
+    public Transform pauQuitSelectionTrans;
+
     [Header("Pause Menu Objects")]
     public GameObject objPause;
     public GameObject objPauseOptions;
+    public GameObject objPauseQuit;
 
     void Start()
     {
@@ -35,6 +42,7 @@ public class PauseTween : MonoBehaviour
 
         objPause.SetActive(false);
         objPauseOptions.SetActive(false);
+        objPauseQuit.SetActive(false);
     }
 
     public void openPause()
@@ -57,6 +65,16 @@ public class PauseTween : MonoBehaviour
         closeOp();
     }
 
+    public void pauseOpenExit()
+    {
+        gotoEx();
+    }
+
+    public void pauseCloseExit()
+    {
+        closeEx();
+    }
+
     void pauseOpen()
     {
         StartCoroutine(pauseOpenAnim());
@@ -72,6 +90,7 @@ public class PauseTween : MonoBehaviour
             pauseSelectionCG.alpha = 0;
             pauseTextTrans.localPosition = new Vector2(0, 95);
             pauseSelectionTrans.localPosition = new Vector2(0, -45);
+            pauseLineTrans.localPosition = new Vector2(0, 30);
             pauseLineTrans.localScale = new Vector3(0, 1, 1);
 
             pauseBackCG.LeanAlpha(1, 0.3f).setEaseOutCubic().setIgnoreTimeScale(true);
@@ -110,6 +129,7 @@ public class PauseTween : MonoBehaviour
             Time.timeScale = 1f;
             objPause.SetActive(false);
             pauseDisableMove.enableMovement();
+            controlManager.pauseFalse();
         }
     }
 
@@ -209,6 +229,83 @@ public class PauseTween : MonoBehaviour
             pauseTextTrans.LeanMoveLocal(new Vector2(0, 105), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
             pauseSelectionTrans.LeanMoveLocal(new Vector2(0, -55), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
             pauseLineTrans.LeanScale(new Vector3(1, 1, 1), 0.4f).setEaseInOutCubic().setIgnoreTimeScale(true);
+        }
+    }
+
+    void gotoEx()
+    {
+        StartCoroutine(gotoExAnim());
+
+        IEnumerator gotoExAnim()
+        {
+            pauseSelectionCG.interactable = false;
+            pauQuitSelectionCG.interactable = true;
+            controlManager.quitTrue();
+
+            pauseBackCG.alpha = 1;
+            pauseTextCG.alpha = 1;
+            pauseSelectionCG.alpha = 1;
+            pauseLineTrans.localScale = new Vector3(1, 1, 1);
+            pauseTextTrans.localPosition = new Vector2(0, 105);
+            pauseSelectionTrans.localPosition = new Vector2(0, -55);
+
+            pauQuitSelectionCG.alpha = 0;
+            pauQuitTextCG.alpha = 0;
+            pauQuitSelectionTrans.localPosition = new Vector2(0, 10);
+            pauQuitTextTrans.localPosition = new Vector2(0, 60);
+
+            pauseSelectionCG.LeanAlpha(0, 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseTextCG.LeanAlpha(0, 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseSelectionTrans.LeanMoveLocal(new Vector2(0, -65), 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseTextTrans.LeanMoveLocal(new Vector2(0, 95), 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseLineTrans.LeanMoveLocal(new Vector2(0, 0), 0.7f).setEaseInOutCubic().setIgnoreTimeScale(true);
+            pauseLineTrans.LeanScale(new Vector3(2, 1, 1), 0.7f).setEaseInOutCubic().setIgnoreTimeScale(true);
+
+            yield return new WaitForSecondsRealtime(0.3f);
+            objPauseQuit.SetActive(true);
+            pauQuitSelectionCG.LeanAlpha(1, 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauQuitTextCG.LeanAlpha(1, 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauQuitSelectionTrans.LeanMoveLocal(new Vector2(0, 0), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauQuitTextTrans.LeanMoveLocal(new Vector2(0, 50), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+        }
+    }
+
+    void closeEx()
+    {
+        StartCoroutine(closeExAnim());
+
+        IEnumerator closeExAnim()
+        {
+            pauseSelectionCG.interactable = true;
+            pauQuitSelectionCG.interactable = false;
+            controlManager.quitFalse();
+
+            pauseBackCG.alpha = 1;
+            pauseTextCG.alpha = 0;
+            pauseSelectionCG.alpha = 0;
+            pauseLineTrans.localScale = new Vector3(2, 1, 1);
+            pauseTextTrans.localPosition = new Vector2(0, 95);
+            pauseSelectionTrans.localPosition = new Vector2(0, -65);
+
+            pauQuitSelectionCG.alpha = 1;
+            pauQuitTextCG.alpha = 1;
+            pauQuitSelectionTrans.localPosition = new Vector2(0, 0);
+            pauQuitTextTrans.localPosition = new Vector2(0, 50);
+
+            pauQuitSelectionCG.LeanAlpha(0, 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitTextCG.LeanAlpha(0, 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitSelectionTrans.LeanMoveLocal(new Vector2(0, 10), 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitTextTrans.LeanMoveLocal(new Vector2(0, 60), 0.3f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseLineTrans.LeanMoveLocal(new Vector2(0, 30), 0.7f).setEaseInOutCubic().setIgnoreTimeScale(true);
+            pauseLineTrans.LeanScale(new Vector3(1, 1, 1), 0.7f).setEaseInOutCubic().setIgnoreTimeScale(true);
+
+            yield return new WaitForSecondsRealtime(0.3f);
+            objPauseQuit.SetActive(false);
+
+            pauseSelectionCG.LeanAlpha(1, 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauseTextCG.LeanAlpha(1, 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauseSelectionTrans.LeanMoveLocal(new Vector2(0, -55), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+            pauseTextTrans.LeanMoveLocal(new Vector2(0, 105), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
         }
     }
 }
