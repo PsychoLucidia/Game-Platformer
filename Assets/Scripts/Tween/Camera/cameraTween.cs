@@ -8,6 +8,7 @@ public class cameraTween : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         leanCamera = GetComponent<Transform>();
 
         leanCamera.position = new Vector3(0, 200, -10);

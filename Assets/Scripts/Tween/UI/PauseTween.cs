@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseTween : MonoBehaviour
 {
     private PauseDisableScript pauseDisableMove;
     private ControlManager controlManager;
+    private changeScene changeScript;
 
     [Header("Pause Menu")]
     public CanvasGroup pauseBackCG;
@@ -30,13 +33,18 @@ public class PauseTween : MonoBehaviour
     public Transform pauQuitTextTrans;
     public Transform pauQuitSelectionTrans;
 
+    [Header("Black")]
+    public CanvasGroup blkOverCG;
+
     [Header("Pause Menu Objects")]
     public GameObject objPause;
     public GameObject objPauseOptions;
     public GameObject objPauseQuit;
+    public GameObject objBlkOver;
 
     void Start()
     {
+        changeScript = GetComponent<changeScene>();
         pauseDisableMove = GetComponent<PauseDisableScript>();
         controlManager = GetComponent<ControlManager>();
 
@@ -73,6 +81,11 @@ public class PauseTween : MonoBehaviour
     public void pauseCloseExit()
     {
         closeEx();
+    }
+
+    public void mainMenu()
+    {
+        goToMenu();
     }
 
     void pauseOpen()
@@ -306,6 +319,40 @@ public class PauseTween : MonoBehaviour
             pauseTextCG.LeanAlpha(1, 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
             pauseSelectionTrans.LeanMoveLocal(new Vector2(0, -55), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
             pauseTextTrans.LeanMoveLocal(new Vector2(0, 105), 0.4f).setEaseOutCubic().setIgnoreTimeScale(true);
+        }
+    }
+
+    void goToMenu()
+    {
+        StartCoroutine(gotoMenuAnim());
+
+        IEnumerator gotoMenuAnim()
+        {
+            pauseSelectionCG.interactable = false;
+            pauOpBackCG.interactable = false;
+            pauQuitSelectionCG.interactable = false;
+            objBlkOver.SetActive(true);
+
+            pauQuitTextCG.alpha = 1;
+            pauQuitSelectionCG.alpha = 1;
+
+            blkOverCG.alpha = 0;
+
+            pauseLineTrans.localScale = new Vector3(2, 1, 1);
+            pauQuitTextTrans.localPosition = new Vector2(0, 50);
+            pauQuitSelectionTrans.localPosition = new Vector2(0, 0);
+
+            blkOverCG.LeanAlpha(1, 1.5f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitTextCG.LeanAlpha(0, 0.5f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitSelectionCG.LeanAlpha(0, 0.5f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauseLineTrans.LeanScale(new Vector3(0, 1, 1), 0.5f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitTextTrans.LeanMoveLocal(new Vector2(0, 40), 0.5f).setEaseInCubic().setIgnoreTimeScale(true);
+            pauQuitSelectionTrans.LeanMoveLocal(new Vector2(0, 0.5f), 0.5f).setEaseInCubic().setIgnoreTimeScale(true);
+
+
+            yield return new WaitForSecondsRealtime(3f);
+            changeScript.goToSceneAsync(1);
+
         }
     }
 }
